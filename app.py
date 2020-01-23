@@ -29,6 +29,16 @@ def display_question(question_num):
 @app.route("/answer", methods=["POST"])
 def process_answer():
 
+    question_instance = satisfaction_survey.questions
     question_num = int(request.form['question_num']) + 1
-    return redirect(f"/questions/{question_num}")
 
+    if question_num < len(question_instance):
+        responses.append(request.form['question'])
+        destination = f"/questions/{question_num}"
+    else:
+        destination = "/thank-you"
+    return redirect(destination)
+
+@app.route("/thank-you")
+def finish_survey():
+    return render_template("thank-you.html", title="End of Survey")
