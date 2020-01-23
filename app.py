@@ -20,10 +20,14 @@ def display_survey():
 @app.route("/questions/<int:question_num>")
 def display_question(question_num):
 
+    if not question_num == len(responses):
+        return redirect(f"/questions/{len(responses)}")
+
     question_instance = satisfaction_survey.questions[question_num]
     question_text = question_instance.question
     choices = question_instance.choices
     title = f"Question {question_num + 1}"
+
     return render_template("survey-question.html", title=title, question=question_text, choices=choices, question_num=question_num)
 
 @app.route("/answer", methods=["POST"])
