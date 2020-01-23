@@ -11,15 +11,19 @@ responses = []
 
 @app.route("/")
 def display_survey():
+
     title = satisfaction_survey.title
     instructions = satisfaction_survey.instructions
     return render_template("survey.html", title=title, instructions=instructions)
 
 @app.route("/questions/<int:question_num>")
 def display_question(question_num):
-    question = satisfaction_survey.questions[question_num]
+
+    question_instance = satisfaction_survey.questions[question_num]
+    question_text = question_instance.question
+    choices = question_instance.choices
     title = f"Question {question_num + 1}"
-    return render_template("survey-question.html", title=title, question=question)
-    # question = satisfaction_survey.title
-    # instructions = satisfaction_survey.instructions
-    # return render_template("survey.html", title=title, instructions=instructions)
+    return render_template("survey-question.html", title=title, question=question_text, choices=choices, question_num=question_num)
+
+
+    
