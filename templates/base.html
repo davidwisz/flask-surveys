@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}TITLE{% endblock %}</title>
+    <style>
+        .button, button { background-color: #039; color: #fff; padding: 6px 12px; border-radius: 5px; font-size: 1.25em; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <h1>{% block header %}HEADER{% endblock %}</h1>
+    {% block content %}BODY CONTENT GOES HERE{% endblock %}
+</body>
+</html>

@@ -22,6 +22,8 @@ class Survey:
         self.instructions = instructions
         self.questions = questions
 
+    def __repr__(self):
+        return f"<Survey title={self.title} instructions={self.instructions} questions={self.questions}"
 
 satisfaction_survey = Survey(
     "Customer Satisfaction Survey",
