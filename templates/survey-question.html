@@ -9,6 +9,7 @@
         {% for choice in choices %}
             <input type="radio" id="{{choice}}" name="question-{{question_num}}">{{ choice }}</input><br>
         {% endfor %}
+        <input type="hidden" name="question_num" value="{{question_num}}"></input>
         <br>
         <button type="submit">Next Question!</button>
     </form>

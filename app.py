@@ -1,11 +1,12 @@
-from flask import Flask, request, render_template, flash
-#from flask_debugtoolbar import DebugToolbarExtension
+from flask import Flask, request, render_template, flash, redirect
+import blinker
+from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey
 
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = "oh-so-secret"
+app.config['SECRET_KEY'] = "oh-so-secret"
 
-# debug = DebugToolbarExtension(app)
+debug = DebugToolbarExtension(app)
 
 responses = []
 
@@ -25,5 +26,9 @@ def display_question(question_num):
     title = f"Question {question_num + 1}"
     return render_template("survey-question.html", title=title, question=question_text, choices=choices, question_num=question_num)
 
+@app.route("/answer", methods=["POST"])
+def process_answer():
 
-    
+    question_num = int(request.form['question_num']) + 1
+    return redirect(f"/questions/{question_num}")
+
