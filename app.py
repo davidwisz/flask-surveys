@@ -5,7 +5,7 @@ from surveys import satisfaction_survey
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "oh-so-secret"
-
+app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 debug = DebugToolbarExtension(app)
 
 responses = []
@@ -19,8 +19,10 @@ def display_survey():
 
 @app.route("/questions/<int:question_num>")
 def display_question(question_num):
-
-    if not question_num == len(responses):
+    #import pdb; pdb.set_trace()
+    if question_num != len(responses):
+        flash("You are missing an answer!")
+        #breakpoint()
         return redirect(f"/questions/{len(responses)}")
 
     question_instance = satisfaction_survey.questions[question_num]
