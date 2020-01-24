@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, flash, redirect
+from flask import Flask, request, render_template, flash, redirect, session
 import blinker
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey
@@ -8,7 +8,7 @@ app.config['SECRET_KEY'] = "oh-so-secret"
 app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 debug = DebugToolbarExtension(app)
 
-responses = []
+
 
 @app.route("/")
 def display_survey():
@@ -17,10 +17,16 @@ def display_survey():
     instructions = satisfaction_survey.instructions
     return render_template("survey.html", title=title, instructions=instructions)
 
+@app.route("/start", methods=["POST"])
+def initiate_session():
+    session["responses"] = []
+    return redirect("/questions/0")
+
 @app.route("/questions/<int:question_num>")
 def display_question(question_num):
     #import pdb; pdb.set_trace()
-    if question_num != len(responses):
+    if question_num != len(session["responses"]):
+        responses = session["responses"]
         flash("You are missing an answer!")
         #breakpoint()
         return redirect(f"/questions/{len(responses)}")
@@ -39,7 +45,9 @@ def process_answer():
     question_num = int(request.form['question_num']) + 1
 
     if question_num < len(question_instance):
+        responses = session["responses"]
         responses.append(request.form['question'])
+        session["responses"] = responses
         destination = f"/questions/{question_num}"
     else:
         destination = "/thank-you"
